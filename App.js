@@ -1,20 +1,20 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
-  Text,
   View,
+  Text,
   TextInput,
   TouchableOpacity,
   Alert,
   FlatList,
   Modal,
-  Button,
   StatusBar,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import "./global.css";
+
 
 export default function App() {
   // Authentication state
@@ -178,42 +178,42 @@ export default function App() {
 
   // Render menu item
   const renderMenuItem = ({ item }) => (
-    <View style={styles.menuItem}>
-      <View style={styles.menuInfo}>
-        <Text style={styles.menuName}>{item.name}</Text>
-        <Text style={styles.menuPrice}>₹{item.price}</Text>
+    <View className="flex-row justify-between items-center p-4 bg-white rounded-xl mb-3 shadow-sm">
+      <View className="flex-1">
+        <Text className="text-base font-semibold text-gray-800">{item.name}</Text>
+        <Text className="text-base text-green-600 font-semibold">₹{item.price}</Text>
       </View>
       <TouchableOpacity
-        style={styles.addButton}
+        className="bg-green-600 px-4 py-2 rounded-lg"
         onPress={() => addToCart(item)}
       >
-        <Text style={styles.addButtonText}>Add</Text>
+        <Text className="text-white font-bold">Add</Text>
       </TouchableOpacity>
     </View>
   );
 
   // Render cart item
   const renderCartItem = ({ item }) => (
-    <View style={styles.cartItem}>
-      <View style={styles.cartInfo}>
-        <Text style={styles.cartName}>{item.name}</Text>
-        <Text style={styles.cartPrice}>
+    <View className="flex-row justify-between items-center p-4 bg-white rounded-xl mb-3 shadow-sm">
+      <View className="flex-1">
+        <Text className="text-base font-semibold text-gray-800">{item.name}</Text>
+        <Text className="text-sm text-gray-600">
           ₹{item.price} x {item.quantity}
         </Text>
       </View>
-      <View style={styles.quantityControls}>
+      <View className="flex-row items-center">
         <TouchableOpacity
-          style={styles.quantityButton}
+          className="bg-gray-100 w-8 h-8 rounded-full justify-center items-center border border-gray-200"
           onPress={() => updateQuantity(item.id, item.quantity - 1)}
         >
-          <Text style={styles.quantityButtonText}>-</Text>
+          <Text className="font-bold text-base text-gray-800">-</Text>
         </TouchableOpacity>
-        <Text style={styles.quantityText}>{item.quantity}</Text>
+        <Text className="mx-3 text-base font-semibold text-gray-800">{item.quantity}</Text>
         <TouchableOpacity
-          style={styles.quantityButton}
+          className="bg-gray-100 w-8 h-8 rounded-full justify-center items-center border border-gray-200"
           onPress={() => updateQuantity(item.id, item.quantity + 1)}
         >
-          <Text style={styles.quantityButtonText}>+</Text>
+          <Text className="font-bold text-base text-gray-800">+</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -221,19 +221,19 @@ export default function App() {
 
   if (!isLoggedIn) {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView className="flex-1 bg-white">
         <KeyboardAvoidingView 
-          style={styles.loginContainer} 
+          className="flex-1 justify-center p-5" 
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
         <StatusBar barStyle="dark-content" />
-        <View style={styles.loginContainer}>
-          <Text style={styles.title}>Restaurant POS</Text>
-          <Text style={styles.subtitle}>Sign in to continue</Text>
+        <View className="flex-1 justify-center">
+          <Text className="text-3xl font-bold text-center mb-2 text-gray-800">Restaurant POS</Text>
+          <Text className="text-base text-center mb-10 text-gray-600">Sign in to continue</Text>
 
-          <View style={styles.loginForm}>
+          <View className="w-full">
             <TextInput
-              style={styles.input}
+              className="bg-gray-50 p-4 rounded-xl mb-4 border border-gray-200 text-base text-gray-800"
               placeholder="Username"
               value={username}
               onChangeText={setUsername}
@@ -241,9 +241,9 @@ export default function App() {
               placeholderTextColor={"#999"}
             />
 
-            <View style={styles.passwordContainer}>
+            <View className="flex-row items-center bg-gray-50 rounded-xl mb-4 border border-gray-200">
               <TextInput
-                style={styles.passwordInput}
+                className="flex-1 p-4 text-base text-gray-800"
                 placeholder="Password"
                 value={password}
                 onChangeText={setPassword}
@@ -251,7 +251,7 @@ export default function App() {
                 placeholderTextColor={"#999"}
               />
               <TouchableOpacity 
-                style={styles.visibilityToggle}
+                className="p-4"
                 onPress={togglePasswordVisibility}
               >
                 {showPassword ? (
@@ -262,66 +262,66 @@ export default function App() {
               </TouchableOpacity>
             </View>
 
-            {loginError ? <Text style={styles.error}>{loginError}</Text> : null}
+            {loginError ? <Text className="text-red-500 text-center mb-4 text-sm">{loginError}</Text> : null}
 
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
+            <TouchableOpacity className="bg-blue-500 p-4 rounded-xl items-center mb-5" onPress={handleLogin}>
+              <Text className="text-white font-bold text-base">Login</Text>
             </TouchableOpacity>
 
-            <Text style={styles.demoText}>
+            <Text className="text-center text-gray-500 italic text-sm">
               Demo credentials: admin/admin123 or staff/staff123
             </Text>
           </View>
         </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
-          );
+    );
   }
 
   // POS Screen
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView className="flex-1 bg-gray-50">
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Restaurant POS</Text>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-          <Text style={styles.logoutButton}>Logout</Text>
+      <View className="flex-row justify-between items-center px-5 py-4 bg-white border-b border-gray-200 shadow-sm">
+        <Text className="text-xl font-bold text-gray-800">Restaurant POS</Text>
+        <TouchableOpacity onPress={handleLogout} className="p-2">
+          <Text className="text-red-500 font-semibold">Logout</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={styles.mainContent}>
+      <View className="flex-1 flex-row">
         {/* Menu Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Menu</Text>
+        <View className="flex-1 p-4">
+          <Text className="text-lg font-bold mb-4 text-gray-800">Menu</Text>
           <FlatList
             data={menuItems}
             renderItem={renderMenuItem}
             keyExtractor={item => item.id.toString()}
-            style={styles.menuList}
+            className="flex-1"
           />
         </View>
 
         {/* Cart Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Order Summary</Text>
+        <View className="flex-1 p-4">
+          <Text className="text-lg font-bold mb-4 text-gray-800">Order Summary</Text>
 
           {cart.length === 0 ? (
-            <View style={styles.emptyCartContainer}>
-              <Text style={styles.emptyCart}>Your cart is empty</Text>
+            <View className="items-center justify-center py-10">
+              <Text className="text-center text-gray-500 italic text-base">Your cart is empty</Text>
             </View>
           ) : (
             <FlatList
               data={cart}
               renderItem={renderCartItem}
               keyExtractor={item => item.id.toString()}
-              style={styles.cartList}
+              className="flex-1"
             />
           )}
 
           {/* Discount Input */}
-          <View style={styles.discountContainer}>
+          <View className="flex-row mt-5 mb-4">
             <TextInput
-              style={styles.discountInput}
+              className="flex-1 bg-white p-3 rounded-lg border border-gray-200 mr-3 text-base text-gray-800"
               placeholder="Discount %"
               placeholderTextColor="#999"
               keyboardType="numeric"
@@ -329,106 +329,106 @@ export default function App() {
               onChangeText={text => setDiscount(parseFloat(text) || 0)}
             />
             <TouchableOpacity
-              style={styles.applyButton}
+              className="bg-blue-500 px-4 py-3 rounded-lg justify-center"
               onPress={applyDiscount}
             >
-              <Text style={styles.applyButtonText}>Apply</Text>
+              <Text className="text-white font-semibold">Apply</Text>
             </TouchableOpacity>
           </View>
 
           {/* Order Totals */}
-          <View style={styles.totalsContainer}>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Subtotal:</Text>
-              <Text style={styles.totalValue}>₹{calculateSubtotal().toFixed(2)}</Text>
+          <View className="bg-white p-5 rounded-xl mb-4 shadow-sm">
+            <View className="flex-row justify-between mb-3">
+              <Text className="text-gray-600">Subtotal:</Text>
+              <Text className="font-semibold text-gray-800">₹{calculateSubtotal().toFixed(2)}</Text>
             </View>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Tax (10%):</Text>
-              <Text style={styles.totalValue}>₹{calculateTax().toFixed(2)}</Text>
+            <View className="flex-row justify-between mb-3">
+              <Text className="text-gray-600">Tax (10%):</Text>
+              <Text className="font-semibold text-gray-800">₹{calculateTax().toFixed(2)}</Text>
             </View>
-            <View style={styles.totalRow}>
-              <Text style={styles.totalLabel}>Discount:</Text>
-              <Text style={styles.totalValue}>-₹{calculateDiscount().toFixed(2)}</Text>
+            <View className="flex-row justify-between mb-3">
+              <Text className="text-gray-600">Discount:</Text>
+              <Text className="font-semibold text-gray-800">-₹{calculateDiscount().toFixed(2)}</Text>
             </View>
-            <View style={[styles.totalRow, styles.grandTotal]}>
-              <Text style={styles.grandTotalLabel}>Total:</Text>
-              <Text style={styles.grandTotalValue}>₹{calculateTotal().toFixed(2)}</Text>
+            <View className="flex-row justify-between pt-3 mt-1 border-t border-gray-200">
+              <Text className="font-bold text-gray-800 text-base">Total:</Text>
+              <Text className="font-bold text-green-600 text-base">₹{calculateTotal().toFixed(2)}</Text>
             </View>
           </View>
 
           {/* Complete Order Button */}
           <TouchableOpacity
-            style={[styles.completeOrderButton, cart.length === 0 && styles.disabledButton]}
+            className={`p-4 rounded-xl items-center shadow-md ${cart.length === 0 ? 'bg-gray-400' : 'bg-green-600'}`}
             onPress={completeOrder}
             disabled={cart.length === 0}
           >
-            <Text style={styles.completeOrderButtonText}>Complete Order</Text>
+            <Text className="text-white font-bold text-base">Complete Order</Text>
           </TouchableOpacity>
         </View>
       </View>
 
       {/* Receipt Modal */}
       <Modal visible={showReceipt} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
-          <View style={styles.receipt}>
-            <Text style={styles.receiptTitle}>Order Receipt</Text>
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white p-6 rounded-xl w-11/12 max-w-md">
+            <Text className="text-2xl font-bold text-center mb-4 text-gray-800">Order Receipt</Text>
 
             {currentOrder && (
               <>
-                <Text style={styles.receiptDetails}>
+                <Text className="mb-2 text-gray-600 text-center">
                   Order #: {currentOrder.id}
                 </Text>
-                <Text style={styles.receiptDetails}>
+                <Text className="mb-4 text-gray-600 text-center">
                   Date: {currentOrder.timestamp.toLocaleDateString()}{' '}
                   {currentOrder.timestamp.toLocaleTimeString()}
                 </Text>
 
-                <View style={styles.receiptDivider} />
+                <View className="h-px bg-gray-200 my-4" />
 
                 {currentOrder.items.map(item => (
-                  <View key={item.id} style={styles.receiptItem}>
-                    <Text style={styles.receiptItemText}>
+                  <View key={item.id} className="flex-row justify-between mb-3">
+                    <Text className="text-gray-800">
                       {item.name} x {item.quantity}
                     </Text>
-                    <Text style={styles.receiptItemText}>₹{(item.price * item.quantity).toFixed(2)}</Text>
+                    <Text className="text-gray-800">₹{(item.price * item.quantity).toFixed(2)}</Text>
                   </View>
                 ))}
 
-                <View style={styles.receiptDivider} />
+                <View className="h-px bg-gray-200 my-4" />
 
-                <View style={styles.receiptTotal}>
-                  <View style={styles.receiptTotalRow}>
+                <View className="mt-4">
+                  <View className="flex-row justify-between mb-2">
                     <Text>Subtotal:</Text>
                     <Text>₹{currentOrder.subtotal.toFixed(2)}</Text>
                   </View>
-                  <View style={styles.receiptTotalRow}>
+                  <View className="flex-row justify-between mb-2">
                     <Text>Tax:</Text>
                     <Text>₹{currentOrder.tax.toFixed(2)}</Text>
                   </View>
-                  <View style={styles.receiptTotalRow}>
+                  <View className="flex-row justify-between mb-2">
                     <Text>Discount:</Text>
                     <Text>-₹{currentOrder.discount.toFixed(2)}</Text>
                   </View>
-                  <View style={[styles.receiptTotalRow, styles.receiptGrandTotalRow]}>
-                    <Text style={styles.receiptGrandTotalLabel}>Total:</Text>
-                    <Text style={styles.receiptGrandTotalValue}>₹{currentOrder.total.toFixed(2)}</Text>
+                  <View className="flex-row justify-between pt-2 mt-2 border-t border-gray-200">
+                    <Text className="font-bold text-base text-gray-800">Total:</Text>
+                    <Text className="font-bold text-base text-green-600">₹{currentOrder.total.toFixed(2)}</Text>
                   </View>
                 </View>
               </>
             )}
 
-            <View style={styles.receiptButtons}>
+            <View className="flex-row justify-between mt-6">
               <TouchableOpacity 
-                style={styles.receiptButton}
+                className="flex-1 bg-blue-500 p-3 rounded-lg items-center mx-1"
                 onPress={() => Alert.alert('Print', 'Receipt sent to printer!')}
               >
-                <Text style={styles.receiptButtonText}>Print Receipt</Text>
+                <Text className="text-white font-semibold">Print Receipt</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.receiptButton, styles.closeButton]}
+                className="flex-1 bg-gray-500 p-3 rounded-lg items-center mx-1"
                 onPress={() => setShowReceipt(false)}
               >
-                <Text style={styles.receiptButtonText}>Close</Text>
+                <Text className="text-white font-semibold">Close</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -437,397 +437,3 @@ export default function App() {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  loginContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 20,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 8,
-    color: '#2c3e50',
-  },
-  subtitle: {
-    fontSize: 16,
-    textAlign: 'center',
-    marginBottom: 40,
-    color: '#7f8c8d',
-  },
-  loginForm: {
-    width: '100%',
-  },
-  input: {
-    backgroundColor: '#f8f9fa',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-    fontSize: 16,
-    color: '#2c3e50',
-  },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f8f9fa',
-    borderRadius: 12,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  passwordInput: {
-    flex: 1,
-    padding: 16,
-    fontSize: 16,
-    color: '#2c3e50',
-  },
-  visibilityToggle: {
-    padding: 16,
-  },
-  error: {
-    color: '#e74c3c',
-    textAlign: 'center',
-    marginBottom: 16,
-    fontSize: 14,
-  },
-  loginButton: {
-    backgroundColor: '#3498db',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  loginButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  demoText: {
-    textAlign: 'center',
-    color: '#95a5a6',
-    fontStyle: 'italic',
-    fontSize: 14,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    backgroundColor: 'white',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  headerTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-  },
-  logoutBtn: {
-    padding: 8,
-  },
-  logoutButton: {
-    color: '#e74c3c',
-    fontWeight: '600',
-  },
-  mainContent: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  section: {
-    flex: 1,
-    padding: 16,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#2c3e50',
-  },
-  menuList: {
-    flex: 1,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  menuInfo: {
-    flex: 1,
-  },
-  menuName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2c3e50',
-  },
-  menuPrice: {
-    fontSize: 16,
-    color: '#27ae60',
-    fontWeight: '600',
-  },
-  addButton: {
-    backgroundColor: '#27ae60',
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-  },
-  addButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  emptyCartContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 40,
-  },
-  emptyCart: {
-    textAlign: 'center',
-    color: '#95a5a6',
-    fontStyle: 'italic',
-    fontSize: 16,
-  },
-  cartList: {
-    flex: 1,
-  },
-  cartItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  cartInfo: {
-    flex: 1,
-  },
-  cartName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2c3e50',
-  },
-  cartPrice: {
-    fontSize: 14,
-    color: '#7f8c8d',
-  },
-  quantityControls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  quantityButton: {
-    backgroundColor: '#f8f9fa',
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-  },
-  quantityButtonText: {
-    fontWeight: 'bold',
-    fontSize: 16,
-    color: '#2c3e50',
-  },
-  quantityText: {
-    marginHorizontal: 12,
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#2c3e50',
-  },
-  discountContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-    marginBottom: 16,
-  },
-  discountInput: {
-    flex: 1,
-    backgroundColor: 'white',
-    padding: 12,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#e9ecef',
-    marginRight: 12,
-    fontSize: 16,
-    color: '#2c3e50',
-  },
-  applyButton: {
-    backgroundColor: '#3498db',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    justifyContent: 'center',
-  },
-  applyButtonText: {
-    color: 'white',
-    fontWeight: '600',
-  },
-  totalsContainer: {
-    backgroundColor: 'white',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 16,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  totalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  totalLabel: {
-    color: '#7f8c8d',
-  },
-  totalValue: {
-    fontWeight: '600',
-    color: '#2c3e50',
-  },
-  grandTotal: {
-    borderTopWidth: 1,
-    borderTopColor: '#e9ecef',
-    paddingTop: 12,
-    marginTop: 4,
-  },
-  grandTotalLabel: {
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    fontSize: 16,
-  },
-  grandTotalValue: {
-    fontWeight: 'bold',
-    color: '#27ae60',
-    fontSize: 16,
-  },
-  completeOrderButton: {
-    backgroundColor: '#27ae60',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 3,
-  },
-  disabledButton: {
-    backgroundColor: '#bdc3c7',
-  },
-  completeOrderButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  receipt: {
-    backgroundColor: 'white',
-    padding: 24,
-    borderRadius: 16,
-    width: '90%',
-    maxWidth: 400,
-  },
-  receiptTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
-    color: '#2c3e50',
-  },
-  receiptDetails: {
-    marginBottom: 8,
-    color: '#7f8c8d',
-    textAlign: 'center',
-  },
-  receiptDivider: {
-    height: 1,
-    backgroundColor: '#e9ecef',
-    marginVertical: 16,
-  },
-  receiptItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
-  },
-  receiptItemText: {
-    color: '#2c3e50',
-  },
-  receiptTotal: {
-    marginTop: 16,
-  },
-  receiptTotalRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  receiptGrandTotalRow: {
-    borderTopWidth: 1,
-    borderTopColor: '#e9ecef',
-    paddingTop: 12,
-    marginTop: 8,
-  },
-  receiptGrandTotalLabel: {
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    fontSize: 16,
-  },
-  receiptGrandTotalValue: {
-    fontWeight: 'bold',
-    color: '#27ae60',
-    fontSize: 16,
-  },
-  receiptButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 24,
-  },
-  receiptButton: {
-    flex: 1,
-    backgroundColor: '#3498db',
-    padding: 12,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginHorizontal: 6,
-  },
-  closeButton: {
-    backgroundColor: '#95a5a6',
-  },
-  receiptButtonText: {
-    color: 'white',
-    fontWeight: '600',
-  },
-});
